@@ -27,14 +27,52 @@ new class extends Component
 
     <div class="row g-4">
 
-        {{-- Immagine --}}
+        {{-- Foto --}}
         <div class="col-12 col-lg-7">
-                 @if ($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}"
-                    class="card-img-top object-fit-cover" style="height: 220px;">
-                    @else
-                    <div class="card-img-top object-fit-cover bg-black" style="height: 220px"></div>
-                    @endif
+            @php
+                $slides = collect();
+
+                if ($product->image) {
+                    $slides->push(asset('storage/' . $product->image));
+                }
+
+                foreach (range(1, 3) as $n) {
+                    $slides->push("https://picsum.photos/seed/{$product->id}-{$n}/900/600");
+                }
+            @endphp
+
+            <div id="carousel-{{ $product->id }}" wire:ignore
+                 class="carousel slide rounded-4 overflow-hidden shadow-sm bg-dark">
+
+                <div class="carousel-indicators">
+                    @foreach ($slides as $i => $src)
+                        <button type="button" data-bs-target="#carousel-{{ $product->id }}"
+                                data-bs-slide-to="{{ $i }}" aria-label="Foto {{ $i + 1 }}"
+                                class="{{ $loop->first ? 'active' : '' }}"
+                                @if ($loop->first) aria-current="true" @endif></button>
+                    @endforeach
+                </div>
+
+                <div class="carousel-inner">
+                    @foreach ($slides as $src)
+                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                            <img src="{{ $src }}" alt="{{ $product->title }}"
+                                 class="d-block w-100 object-fit-cover" style="height: 420px;">
+                        </div>
+                    @endforeach
+                </div>
+
+                <button class="carousel-control-prev" type="button"
+                        data-bs-target="#carousel-{{ $product->id }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                        data-bs-target="#carousel-{{ $product->id }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Successiva</span>
+                </button>
+            </div>
         </div>
 
         {{-- Informazioni --}}
@@ -54,7 +92,8 @@ new class extends Component
 
                     <p class="text-secondary" style="white-space: pre-line;">{{ $product->description }}</p>
 
-                    <div><span class="badge text-bg-warning">{{ $product->category->name }}</span></div>
+                    <a href="{{ route('category', $product->category) }}" wire:navigate
+                       class="badge text-bg-warning text-decoration-none">{{ $product->category->name }}</a>
 
                     <hr>
 

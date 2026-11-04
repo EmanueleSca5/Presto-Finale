@@ -23,3 +23,5 @@ Route::delete("/annunci/elimina/{product}" , [ProductController::class , "destro
 Route::livewire("/annunci/{product}/edit" , "annunci.edit")->middleware("auth")->name("edit");
 
 Route::livewire("/annunci/{product}/details" , "annunci.show")->name("show");
+
+Route::livewire("/annunci/categories/{category}", "annunci.categories")->name("category");

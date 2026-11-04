@@ -121,7 +121,7 @@ new class extends Component
 
                         @if ($image)
                         <img src="{{ $image->temporaryUrl() }}" alt="Anteprima"
-                        class="image-fluid rounded-3 mt-3" style="max-height: 220px;">
+                        class="img-fluid rounded-3 mt-3" style="max-height: 220px;">
                         @endif
                     </div>
 

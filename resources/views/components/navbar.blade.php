@@ -1,3 +1,6 @@
+@php
+    $categorie = \App\Models\Category::orderBy('name')->get();
+@endphp
 <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top border-bottom border-warning border-opacity-25">
     <div class="container">
         
@@ -37,6 +40,19 @@
                 <a class="nav-link {{ request()->routeIs('annunci.index') ? 'active text-warning' : '' }}"
                     href="{{ route('annunci.index') }}" wire:navigate>Annunci</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('category') ? 'active text-warning' : '' }}"
+                       href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categorie</a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        @foreach ($categorie as $categoria)
+                            <li>
+                                <a class="dropdown-item" href="{{ route('category', $categoria) }}" wire:navigate>
+                                    {{ $categoria->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('annunci.create') ? 'active text-warning' : '' }}"
                         href="{{ route('annunci.create') }}" wire:navigate>Pubblica</a>
@@ -49,6 +65,7 @@
                         </li>    
                         <li class="nav-item">
                             <form action="{{route("logout")}}" method="POST">
+                                @csrf
                                 <button class="text-white bg-black border-0" type="submit">Logout</button>
                             </form>
                         </li>
