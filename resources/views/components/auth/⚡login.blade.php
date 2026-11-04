@@ -8,7 +8,7 @@ new class extends Component
     #[Validate("required|email")]
     public string $email = "";
 
-    
+
     #[Validate("required")]
     public string $password = "";
 
@@ -24,7 +24,7 @@ new class extends Component
 
         session()->flash("success" , "login avvenuto con successo");
 
-        $this->redirectIntended("/" , navigate: true);
+        $this->redirectRoute("annunci.create" , navigate: true);
     }
 };
 ?>
@@ -32,13 +32,13 @@ new class extends Component
 <div>
     <div class="container">
         <div class="row justify-content-center my-5 bg-black py-5">
-            <p class="fs-1 fw-bold text-warning text-center">REGISTRATI</p>
+            <p class="fs-1 fw-bold text-warning text-center">ACCEDI</p>
             <form wire:submit="login" class="w-75">
 
                 <p class="fs-5 fw-medium m-0 text-warning mt-3">Email</p>
                 <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror">
                 @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                
+
                 <p class="fs-5 fw-medium m-0 text-warning mt-3">Password</p>
                 <input type="password" wire:model="password" class="form-control @error('password') is-invalid @enderror">
                 @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -47,8 +47,12 @@ new class extends Component
                     <input type="checkbox"  class=" me-2">
                     <p class="text-white m-0 p-0">Ricordami</p>
                 </div>
-                
+
                 <button type="submit" class="btn btn-warning" wire:loading.attr="disabled">Accedi</button>
+                <div>
+                    <p class="text-white mb-0 my-2">Non sei ancora registrato?</p>
+                    <a class="fs-4 text-white" href="{{route("auth.register")}}">Registrati!</a>
+                </div>
             </form>
         </div>
 </div>

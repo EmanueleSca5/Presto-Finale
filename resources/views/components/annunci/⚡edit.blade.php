@@ -38,6 +38,7 @@ new class extends Component
         $this->description = $product->description;
         $this->price = (string) $product->price;
         $this->active = (bool) $product->active;
+        $this->category_id = (string) $product->category_id;
     }
 
     public function update()
@@ -77,14 +78,14 @@ new class extends Component
                             <div class="mb-3">
                                 <label for="title" class="form-label fw-medium">Titolo</label>
                                 <input type="text" id="title" wire:model="title"
-                                       class="form-control @error('title') is-invalid @enderror">
+                                class="form-control @error('title') is-invalid @enderror">
                                 @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label for="description" class="form-label fw-medium">Descrizione</label>
                                 <textarea id="description" wire:model="description" rows="4"
-                                          class="form-control @error('description') is-invalid @enderror"></textarea>
+                                class="form-control @error('description') is-invalid @enderror"></textarea>
                                 @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
@@ -93,7 +94,7 @@ new class extends Component
                                 <div class="input-group has-validation">
                                     <span class="input-group-text">&euro;</span>
                                     <input type="number" id="price" wire:model="price" step="0.01" min="0"
-                                           class="form-control @error('price') is-invalid @enderror">
+                                    class="form-control @error('price') is-invalid @enderror">
                                     @error('price') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                             </div>
@@ -101,7 +102,7 @@ new class extends Component
                             <div class="mb-3">
                                 <label for="image" class="form-label fw-medium">Immagine</label>
                                 <input type="file" id="image" wire:model="image" accept="image/*"
-                                       class="form-control @error('image') is-invalid @enderror">
+                                class="form-control @error('image') is-invalid @enderror">
                                 @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 <div class="form-text">Lascia vuoto per tenere quella attuale.</div>
 
@@ -110,35 +111,53 @@ new class extends Component
                                 </div>
 
                                 @if ($image && ! $errors->has('image'))
-                                    <img src="{{ $image->temporaryUrl() }}" alt="Nuova immagine"
-                                         class="img-fluid rounded-3 mt-3" style="max-height: 220px;">
+                                <img src="{{ $image->temporaryUrl() }}" alt="Nuova immagine"
+                                class="img-fluid rounded-3 mt-3" style="max-height: 220px;">
                                 @else
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}"
-                                         class="img-fluid rounded-3 mt-3" style="max-height: 220px;">
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}"
+                                class="img-fluid rounded-3 mt-3" style="max-height: 220px;">
                                 @endif
                             </div>
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label fw-medium">Categoria</label>
 
-                            <div class="form-check form-switch mb-4">
-                                <input class="form-check-input" type="checkbox" role="switch" id="active" wire:model="active">
-                                <label class="form-check-label" for="active">Annuncio attivo</label>
-                            </div>
+                                <select id="category_id" wire:model="category_id"
+                                class="form-select @error('category_id') is-invalid @enderror">
+                                <option value="">Scegli una categoria</option>
 
-                            <div class="d-flex flex-wrap gap-2">
-                                <button type="submit" class="btn btn-warning btn-lg fw-semibold px-4"
-                                        wire:loading.attr="disabled" wire:target="update">
-                                    <span wire:loading wire:target="update" class="spinner-border spinner-border-sm me-2"></span>
-                                    Salva modifiche
-                                </button>
-                                <a href="{{ route('my-annunci') }}" wire:navigate class="btn btn-outline-light btn-lg">
-                                    Annulla
-                                </a>
-                            </div>
+                                @foreach ($this->categories as $categoria)
+                                <option value="{{ $categoria->id }}" wire:key="cat-{{ $categoria->id }}">
+                                    {{ $categoria->name }}
+                                </option>
+                                @endforeach
+                            </select>
 
-                        </form>
+                            @error('category_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" role="switch" id="active" wire:model="active">
+                            <label class="form-check-label" for="active">Annuncio attivo</label>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg fw-semibold px-4"
+                            wire:loading.attr="disabled" wire:target="update">
+                            <span wire:loading wire:target="update" class="spinner-border spinner-border-sm me-2"></span>
+                            Salva modifiche
+                        </button>
+                        <a href="{{ route('my-annunci') }}" wire:navigate class="btn btn-outline-light btn-lg">
+                            Annulla
+                        </a>
                     </div>
-                </div>
 
+                </form>
             </div>
         </div>
+
     </div>
+</div>
+</div>
 </div>

@@ -20,7 +20,7 @@ new class extends Component
 
 <div class="container py-5">
 
-    <a href="{{ route('annunci.index') }}" wire:navigate 
+    <a href="{{ route('annunci.index') }}" wire:navigate
        class="text-decoration-none text-secondary d-inline-block mb-4">
         &larr; Torna agli annunci
     </a>
@@ -29,8 +29,12 @@ new class extends Component
 
         {{-- Immagine --}}
         <div class="col-12 col-lg-7">
-            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}"
-                 class="w-100 rounded-4 shadow-sm object-fit-cover" style="max-height: 520px;">
+                 @if ($product->image)
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}"
+                    class="card-img-top object-fit-cover" style="height: 220px;">
+                    @else
+                    <div class="card-img-top object-fit-cover bg-black" style="height: 220px"></div>
+                    @endif
         </div>
 
         {{-- Informazioni --}}
@@ -49,6 +53,8 @@ new class extends Component
                     </p>
 
                     <p class="text-secondary" style="white-space: pre-line;">{{ $product->description }}</p>
+
+                    <div><span class="badge text-bg-warning">{{ $product->category->name }}</span></div>
 
                     <hr>
 

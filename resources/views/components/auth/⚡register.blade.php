@@ -28,7 +28,7 @@ new class extends Component
 
         session()->flash("success" , "Registrazione avvenuta con successo");
 
-        $this->redirect("/", navigate: true);
+        $this->redirectRoute("annunci.create", navigate: true);
     }
 }
 ?>
@@ -41,12 +41,12 @@ new class extends Component
                 <p class="fs-5 fw-medium m-0 text-warning">Nome</p>
                 <input type="text" wire:model="name" class="form-control @error('name') is-invalid @enderror">
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                
+
 
                 <p class="fs-5 fw-medium m-0 text-warning mt-3">Email</p>
                 <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror">
                 @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                
+
                 <p class="fs-5 fw-medium m-0 text-warning mt-3">Password</p>
                 <input type="password" wire:model="password" class="form-control @error('password') is-invalid @enderror">
                 @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -54,12 +54,12 @@ new class extends Component
                  <p class="fs-5 fw-medium m-0 text-warning mt-3">Conferma password</p>
                 <input type="password" wire:model="password_confirmation" class="form-control @error('password') is-invalid @enderror">
                 @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                
+
                 <div class="d-flex my-2">
                     <input type="checkbox"  class=" me-2">
                     <p class="text-white m-0 p-0">Ricordami</p>
                 </div>
-                
+
                 <button type="submit" class="btn btn-warning" wire:loading.attr="disabled">Accedi</button>
             </form>
         </div>
