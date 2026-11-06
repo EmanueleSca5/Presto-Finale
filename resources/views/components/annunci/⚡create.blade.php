@@ -107,8 +107,6 @@ new class extends Component
                             @enderror
                         </div>
 
-                    </div>
-
                     <div class="mb-3">
                         <label for="image" class="form-label fw-medium">Immagine</label>
                         <input type="file" id="image" wire:model="image" accept="image/*"
